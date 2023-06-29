@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес IP 84.252.130.133
+IP 84.252.130.133
 
 Frontend https://mesto.sikacheva.nomoreparties.sbs
 
