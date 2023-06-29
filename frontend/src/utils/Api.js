@@ -1,7 +1,7 @@
 class Api {
-    constructor(basePath, token) {
+    constructor(basePath) {
         this._basePath = basePath;
-        this._token = token;
+        //this._token = token;
     }
 
     _getHeaders() {
@@ -96,8 +96,8 @@ class Api {
 }
 
 const api = new Api(
-    'https://mesto.nomoreparties.co/v1/cohort-61',
-    'fc848517-94b6-406d-9164-cc065e2b75b4'); 
+    'https://api.mesto.sikacheva.nomoreparties.sbs',
+)
 
 export default api;    
 
