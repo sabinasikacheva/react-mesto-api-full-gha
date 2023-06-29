@@ -1,0 +1,10 @@
+.element {
+  max-width: 282px;
+  background-color: white;
+  border-radius: 10px;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}

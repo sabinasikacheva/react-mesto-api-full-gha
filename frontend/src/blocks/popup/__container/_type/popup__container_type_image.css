@@ -1,0 +1,6 @@
+.popup__container_type_image {
+    background-color: transparent;
+    padding: 0;
+    position: relative;
+    max-width: inherit;
+}
