@@ -5,6 +5,8 @@ const BadRequestError = require('../utils/errors/BadRequestError'); // 400
 const NotFoundError = require('../utils/errors/NotFoundError'); // 404
 const ConflictError = require('../utils/errors/ConflictError'); // 409
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const getUsers = (req, res, next) => {
   userModel.find({})
     .then((users) => res.send(users))
@@ -104,7 +106,7 @@ const loginUser = (req, res, next) => {
   const { email, password } = req.body;
   userModel.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
         expiresIn: '7d',
       });
       res.send({ _id: token });
