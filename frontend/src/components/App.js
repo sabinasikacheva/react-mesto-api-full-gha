@@ -31,39 +31,35 @@ function App() {
 
   //Получаем массив карточек и информацию о пользователе
   useEffect(() => {
-    api
-      .getCurrentUser()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    api  
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-       })
+    if(loggedIn) {
+      Promise.all([api.getCurrentUser(), api.getInitialCards()])
+        .then(([data, cards]) => {
+          setCurrentUser(data);
+          setCards(cards);
+        })
       .catch((err) => {
          console.log(err);
      });
-  }, []);
+    }
+  }, [loggedIn]);
 
   // Проверяем токен пользователя
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("jwt");
+    if (token) {
       authApi
         .checkToken(token)
         .then((res) => {
           if (res) {
+            api.setToken(token);
             setLoggedIn(true);
             navigate("/", { replace: true });
             setUserEmail(res.data.email);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+        console.log(err);
+     });
     }
   }, [navigate]);
 
@@ -166,7 +162,8 @@ function App() {
     authApi
       .login(password, email)
       .then((res) => {
-        localStorage.setItem("token", res.token);
+        localStorage.setItem('jwt', res.token);
+        api.setToken(res.token);
         setUserEmail(email);
         setLoggedIn(true);
         navigate("/", { replace: true });
@@ -180,9 +177,10 @@ function App() {
 
   // Выход
   const signOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('jwt');
     setLoggedIn(false);
     setUserEmail(null);
+    api.setToken(null);
     navigate("sign-in", { replace: true });
   };
   

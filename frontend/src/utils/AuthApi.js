@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.mesto.sikacheva.nomoreparties.sbs';
+//export const BASE_URL = 'https://api.mesto.sikacheva.nomoreparties.sbs';
+export const BASE_URL = 'http://localhost:3000';
 const headers = {
   'Content-Type': 'application/json'
 }
@@ -10,12 +11,8 @@ const headers = {
     return Promise.reject(`Ошибка: ${res.status}`)
   }
 
-  const request = (url, options) => {
-    return fetch(`${BASE_URL}${url}`, options).then(getJson)
-  }
-
   export const register = (password, email) => {
-    return request('/signup', {
+    return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({
@@ -23,10 +20,11 @@ const headers = {
         email
       })
     })
+    .then(getJson)
   };
 
   export const login = (password, email) => {
-    return request('/signin', {
+    return fetch(`${BASE_URL}/signin`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({
@@ -34,14 +32,17 @@ const headers = {
         email
       })
     })
+    .then(getJson)
   };
 
-  export const checkToken = (token) => {
-    return request('/users/me', {
+  export const checkToken = () => {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
       headers: {
         headers,
         "Authorization" : `Bearer ${token}`
       }
     })
+    .then(getJson)
   }

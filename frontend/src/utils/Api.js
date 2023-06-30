@@ -1,16 +1,19 @@
 class Api {
-    constructor(basePath) {
+    constructor({ basePath }) {
         this._basePath = basePath;
-        //this._token = token;
+        //this._headers = headers;
     }
 
+    // setToken(token) {
+    //     this._headers.Authorization = `Bearer ${token}`;
+    //   }
     _getHeaders() {
-        return {
-            "Content-Type": "application/json",
-            authorization: this._token,
-        };
-    }
-
+      const token = localStorage.getItem('jwt');
+      return {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`
+      };
+  }
     _getJson(res) {
         if (res.ok) {
             return res.json();
@@ -19,16 +22,17 @@ class Api {
     }
 
     getInitialCards() {
-        return fetch(`${this._basePath}/cards`, {
-            headers: this._getHeaders(),
-        })
-          .then(this._getJson);
+        
+      return fetch(`${this._basePath}/cards`, { 
+        headers: this._getHeaders(), 
+      })
+        .then(this._getJson);
     }
 
     createCard(item) {
         return fetch(`${this._basePath}/cards`, {
             method: "POST",
-            headers: this._getHeaders(),
+            hheaders: this._getHeaders(),
             body: JSON.stringify(item),
         })
           .then(this._getJson);
@@ -68,7 +72,7 @@ class Api {
 
     getCurrentUser() {
         return fetch(`${this._basePath}/users/me`, {
-            headers: this._getHeaders(),
+          headers: this._getHeaders(),
         })
           .then(this._getJson);
     }
@@ -95,9 +99,14 @@ class Api {
     }
 }
 
-const api = new Api(
-    'https://api.mesto.sikacheva.nomoreparties.sbs',
-)
+const api = new Api({
+    //basePath: "https://api.mesto.sikacheva.nomoreparties.sbs",
+    basePath: "http://localhost:3000",
+    // headers: {
+    //   "Content-Type": "application/json",
+    //   Authorization: "",
+    // }
+})
 
 export default api;    
 

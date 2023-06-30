@@ -5,7 +5,7 @@ const BadRequestError = require('../utils/errors/BadRequestError'); // 400
 const NotFoundError = require('../utils/errors/NotFoundError'); // 404
 const ConflictError = require('../utils/errors/ConflictError'); // 409
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET = 'JWT_SECRET' } = process.env;
 
 const getUsers = (req, res, next) => {
   userModel.find({})
@@ -109,7 +109,7 @@ const loginUser = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
         expiresIn: '7d',
       });
-      res.send({ _id: token });
+      return res.send({ token });
     })
     .catch(next);
 };
@@ -120,7 +120,7 @@ const getCurrentUser = (req, res, next) => {
       throw new NotFoundError('Пользователь не найден');
     })
     .then((user) => {
-      res.send({ user });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
