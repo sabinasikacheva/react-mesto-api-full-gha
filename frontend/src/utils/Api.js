@@ -100,8 +100,8 @@ class Api {
 }
 
 const api = new Api({
-    //basePath: "https://api.mesto.sikacheva.nomoreparties.sbs",
-    basePath: "http://localhost:3000",
+    basePath: "https://api.mesto.sikacheva.nomoreparties.sbs",
+    // basePath: "http://localhost:3000",
     // headers: {
     //   "Content-Type": "application/json",
     //   Authorization: "",

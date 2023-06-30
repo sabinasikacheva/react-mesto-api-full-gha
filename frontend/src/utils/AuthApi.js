@@ -1,5 +1,5 @@
-//export const BASE_URL = 'https://api.mesto.sikacheva.nomoreparties.sbs';
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://api.mesto.sikacheva.nomoreparties.sbs';
+// export const BASE_URL = 'http://localhost:3000';
 const headers = {
   'Content-Type': 'application/json'
 }
