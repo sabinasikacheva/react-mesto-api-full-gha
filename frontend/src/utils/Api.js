@@ -1,19 +1,19 @@
 class Api {
-    constructor({ basePath }) {
+    constructor({ basePath, headers }) {
         this._basePath = basePath;
-        //this._headers = headers;
+        this._headers = headers;
     }
 
-    // setToken(token) {
-    //     this._headers.Authorization = `Bearer ${token}`;
-    //   }
-    _getHeaders() {
-      const token = localStorage.getItem('jwt');
-      return {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`
-      };
-  }
+    setToken(token) {
+        this._headers.Authorization = `Bearer ${token}`;
+      }
+  //   _getHeaders() {
+  //     const token = localStorage.getItem('jwt');
+  //     return {
+  //         "Content-Type": "application/json",
+  //         authorization: `Bearer ${token}`
+  //     };
+  // }
     _getJson(res) {
         if (res.ok) {
             return res.json();
@@ -24,7 +24,7 @@ class Api {
     getInitialCards() {
         
       return fetch(`${this._basePath}/cards`, { 
-        headers: this._getHeaders(), 
+        headers: this._headers, 
       })
         .then(this._getJson);
     }
@@ -32,7 +32,7 @@ class Api {
     createCard(item) {
         return fetch(`${this._basePath}/cards`, {
             method: "POST",
-            hheaders: this._getHeaders(),
+            headers: this._headers,
             body: JSON.stringify(item),
         })
           .then(this._getJson);
@@ -41,7 +41,7 @@ class Api {
     deleteCard(id) {
         return fetch(`${this._basePath}/cards/${id}`, {
             method: "DELETE",
-            headers: this._getHeaders(),
+            headers: this._headers,
         })
           .then(this._getJson);
     }
@@ -49,7 +49,7 @@ class Api {
     setLike(id) {
         return fetch(`${this._basePath}/cards/${id}/likes`, {
             method: 'PUT',
-            headers: this._getHeaders(),
+            headers: this._headers,
         })
           .then(this._getJson);
     }
@@ -57,7 +57,7 @@ class Api {
     deleteLike(id) {
         return fetch(`${this._basePath}/cards/${id}/likes`, {
             method: 'DELETE',
-            headers: this._getHeaders(),
+            headers: this._headers,
         })
           .then(this._getJson);
     }
@@ -71,16 +71,14 @@ class Api {
       }
 
     getCurrentUser() {
-        return fetch(`${this._basePath}/users/me`, {
-          headers: this._getHeaders(),
-        })
+        return fetch(`${this._basePath}/users/me`, { headers: this._headers })
           .then(this._getJson);
     }
 
     setUserInfo(item) {
         return fetch(`${this._basePath}/users/me`, {
             method: "PATCH",
-            headers: this._getHeaders(),
+            headers: this._headers,
             body: JSON.stringify({
                 name: item.name,
                 about: item.about
@@ -92,7 +90,7 @@ class Api {
     changeUserAvatar(data) {
         return fetch(`${this._basePath}/users/me/avatar`, {
             method: "PATCH",
-            headers: this._getHeaders(),
+            headers: this._headers,
             body: JSON.stringify(data),
         })
           .then(this._getJson);
@@ -102,10 +100,10 @@ class Api {
 const api = new Api({
     basePath: "https://api.mesto.sikacheva.nomoreparties.sbs",
     // basePath: "http://localhost:3000",
-    // headers: {
-    //   "Content-Type": "application/json",
-    //   Authorization: "",
-    // }
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "",
+    }
 })
 
 export default api;    

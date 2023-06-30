@@ -4,8 +4,8 @@ import PopupWithForm from "./PopupWithForm.js";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [name, setName] = React.useState("");
-    const [description, setDescription] = React.useState("");
+    const [name, setName] = React.useState(currentUser.name);
+    const [description, setDescription] = React.useState(currentUser.about);
   
     React.useEffect(() => {
       setName(currentUser.name);

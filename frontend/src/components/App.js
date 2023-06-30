@@ -81,7 +81,7 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(id => id === currentUser._id);
     
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
@@ -114,8 +114,8 @@ function App() {
   function handleUpdateUser(item) {
     api
       .setUserInfo(item)
-      .then((res) => {
-        setCurrentUser(res);
+      .then((userDataServer) => {
+        setCurrentUser({ ...currentUser, ...userDataServer });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -124,8 +124,8 @@ function App() {
   function handleUpdateAvatar(data) {
     api
       .changeUserAvatar(data)
-      .then((res) => {
-        setCurrentUser(res);
+      .then((userAvatarServer) => {
+        setCurrentUser({ ...currentUser, ...userAvatarServer });
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -162,6 +162,7 @@ function App() {
     authApi
       .login(password, email)
       .then((res) => {
+        setCurrentUser(currentUser);
         localStorage.setItem('jwt', res.token);
         api.setToken(res.token);
         setUserEmail(email);
