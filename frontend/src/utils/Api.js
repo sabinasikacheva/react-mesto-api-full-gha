@@ -7,13 +7,7 @@ class Api {
     setToken(token) {
         this._headers.Authorization = `Bearer ${token}`;
       }
-  //   _getHeaders() {
-  //     const token = localStorage.getItem('jwt');
-  //     return {
-  //         "Content-Type": "application/json",
-  //         authorization: `Bearer ${token}`
-  //     };
-  // }
+
     _getJson(res) {
         if (res.ok) {
             return res.json();
@@ -75,23 +69,20 @@ class Api {
           .then(this._getJson);
     }
 
-    setUserInfo(item) {
+    setUserInfo({ name, about }) {
         return fetch(`${this._basePath}/users/me`, {
             method: "PATCH",
             headers: this._headers,
-            body: JSON.stringify({
-                name: item.name,
-                about: item.about
-            })
+            body: JSON.stringify({ name, about })
         })
           .then(this._getJson);
     }
 
-    changeUserAvatar(data) {
+    changeUserAvatar({ avatar }) {
         return fetch(`${this._basePath}/users/me/avatar`, {
             method: "PATCH",
             headers: this._headers,
-            body: JSON.stringify(data),
+            body: JSON.stringify({ avatar }),
         })
           .then(this._getJson);
     }

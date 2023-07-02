@@ -33,8 +33,8 @@ function App() {
   useEffect(() => {
     if(loggedIn) {
       Promise.all([api.getCurrentUser(), api.getInitialCards()])
-        .then(([data, cards]) => {
-          setCurrentUser(data);
+        .then(([userData, cards]) => {
+          setCurrentUser(userData);
           setCards(cards);
         })
       .catch((err) => {
@@ -53,8 +53,10 @@ function App() {
           if (res) {
             api.setToken(token);
             setLoggedIn(true);
+            //setUserEmail(res.data.email);
             navigate("/", { replace: true });
-            setUserEmail(res.data.email);
+            setUserEmail(res.email);
+            // setUserEmail(currentUser.email);
           }
         })
         .catch((err) => {
@@ -111,9 +113,9 @@ function App() {
     setIsInfoTooltip(false);
   }
 
-  function handleUpdateUser(item) {
+  function handleUpdateUser(userData) {
     api
-      .setUserInfo(item)
+      .setUserInfo(userData)
       .then((userDataServer) => {
         setCurrentUser({ ...currentUser, ...userDataServer });
         closeAllPopups();
@@ -121,9 +123,9 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleUpdateAvatar(data) {
+  function handleUpdateAvatar(userAvatar) {
     api
-      .changeUserAvatar(data)
+      .changeUserAvatar(userAvatar)
       .then((userAvatarServer) => {
         setCurrentUser({ ...currentUser, ...userAvatarServer });
         closeAllPopups();
@@ -163,6 +165,7 @@ function App() {
       .login(password, email)
       .then((res) => {
         setCurrentUser(currentUser);
+        //setCurrentUser(res.data);
         localStorage.setItem('jwt', res.token);
         api.setToken(res.token);
         setUserEmail(email);

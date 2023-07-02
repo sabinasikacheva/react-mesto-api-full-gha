@@ -70,7 +70,13 @@ const updateUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.send({ user });
+      // res.send({ user });
+      res.send({
+        id: user.id,
+        avatar: user.avatar,
+        name,
+        about,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -90,7 +96,13 @@ const updateUserAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.send({ user });
+      // res.send({ user });
+      res.send({
+        _id: user._id,
+        avatar,
+        name: user.name,
+        about: user.about,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

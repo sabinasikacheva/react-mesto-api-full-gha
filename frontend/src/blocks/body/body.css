@@ -7,4 +7,5 @@
   appearance: none;
   overflow-x: hidden;
   overflow-y: hidden;
+  min-height: 100vh;
 }
